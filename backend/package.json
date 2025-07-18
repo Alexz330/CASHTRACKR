@@ -14,5 +14,11 @@
     "colors": "^1.4.0",
     "express": "^5.1.0",
     "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
