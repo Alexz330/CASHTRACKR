@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { Router } from "express";
 import { BudgetController } from "../controllers/BudgetController";
 import { handleInputErrors } from "../middleware/validation";
@@ -21,7 +21,7 @@ router.post(
   handleInputErrors,
   BudgetController.create
 );
-router.get("/:id", BudgetController.getById);
-router.put("/:id", BudgetController.updateById);
-router.delete("/:id", BudgetController.deleteById);
+router.get("/:id",param("id").isInt().withMessage("Id no valido"), handleInputErrors, BudgetController.getById);
+router.put("/:id",param("id").isInt().withMessage("Id no valido"), handleInputErrors, BudgetController.updateById);
+router.delete("/:id",param("id").isInt().withMessage("Id no valido"), handleInputErrors, BudgetController.deleteById);
 export default router;
