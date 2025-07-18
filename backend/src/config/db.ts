@@ -6,6 +6,7 @@ const { DATABASE_URL } = process.env;
 
 const sequelize = new Sequelize(DATABASE_URL!, {
   models: [__dirname + "/../models/**/*"],
+  logging: false,
   dialectOptions: {
     ssl: {
       require: true,
