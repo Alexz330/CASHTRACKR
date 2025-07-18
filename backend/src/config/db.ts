@@ -5,6 +5,7 @@ dotenv.config();
 const { DATABASE_URL } = process.env;
 
 const sequelize = new Sequelize(DATABASE_URL!, {
+  models: [__dirname + "/../models/**/*"],
   dialectOptions: {
     ssl: {
       require: true,
