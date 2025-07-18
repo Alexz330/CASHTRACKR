@@ -21,7 +21,34 @@ router.post(
   handleInputErrors,
   BudgetController.create
 );
-router.get("/:id",param("id").isInt().withMessage("Id no valido"), handleInputErrors, BudgetController.getById);
-router.put("/:id",param("id").isInt().withMessage("Id no valido"), handleInputErrors, BudgetController.updateById);
-router.delete("/:id",param("id").isInt().withMessage("Id no valido"), handleInputErrors, BudgetController.deleteById);
+router.get(
+  "/:id",
+  param("id")
+    .isInt()
+    .withMessage("Id no valido")
+    .custom((value) => value > 0)
+    .withMessage("Id no valido"),
+  handleInputErrors,
+  BudgetController.getById
+);
+router.put(
+  "/:id",
+  param("id")
+    .isInt()
+    .withMessage("Id no valido")
+    .custom((value) => value > 0)
+    .withMessage("Id no valido"),
+  handleInputErrors,
+  BudgetController.updateById
+);
+router.delete(
+  "/:id",
+  param("id")
+    .isInt()
+    .withMessage("Id no valido")
+    .custom((value) => value > 0)
+    .withMessage("Id no valido"),
+  handleInputErrors,
+  BudgetController.deleteById
+);
 export default router;
