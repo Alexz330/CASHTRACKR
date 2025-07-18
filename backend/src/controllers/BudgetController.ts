@@ -4,7 +4,11 @@ import Budget from "../models/Budget";
 export class BudgetController {
   static getAll = async (req: Request, res: Response) => {
     try {
-      res.json({ message: "Budgets" });
+      const budgets = await Budget.findAll({
+        order: [["createdAt", "DESC"]],
+        // Todo: filtrar por usuario autenticado
+      });
+      res.json(budgets);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Error al obtener los presupuestos" });
