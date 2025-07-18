@@ -29,7 +29,13 @@ export class BudgetController {
 
   static getById = async (req: Request, res: Response) => {
     try {
-      res.json({ message: "Budget by id" });
+      const { id } = req.params;
+      const budget = await Budget.findByPk(id);
+      if (!budget) {
+        const error = new Error("Presupuesto no encontrado");
+        return res.status(404).json({ message: error.message });
+      }
+      res.json(budget);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Error al obtener el presupuesto" });
