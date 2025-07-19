@@ -28,8 +28,14 @@ export class BudgetController {
   };
 
   static getById = async (req: Request, res: Response) => {
-   const budget = req.budget;
-   res.json(budget);
+   const budget = await Budget.findByPk(req.params.budgetId,{
+    include: ["expenses"]
+   });
+   if (!budget) {
+    const error = new Error("Presupuesto no encontrado");
+    return res.status(404).json({ message: error.message });
+   }
+   res.json({budget});
   };
 
   static updateById = async (req: Request, res: Response) => {
