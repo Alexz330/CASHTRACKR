@@ -2,6 +2,7 @@ import { body, param } from "express-validator";
 import { Router } from "express";
 import { BudgetController } from "../controllers/BudgetController";
 import { handleInputErrors } from "../middleware/validation";
+import { validationBudgetId } from "../middleware/budget";
 const router = Router();
 
 router.get("/", BudgetController.getAll);
@@ -23,12 +24,7 @@ router.post(
 );
 router.get(
   "/:id",
-  param("id")
-    .isInt()
-    .withMessage("Id no valido")
-    .custom((value) => value > 0)
-    .withMessage("Id no valido"),
-  handleInputErrors,
+  validationBudgetId,
   BudgetController.getById
 );
 router.put(
@@ -53,11 +49,7 @@ router.put(
 );
 router.delete(
   "/:id",
-  param("id")
-    .isInt()
-    .withMessage("Id no valido")
-    .custom((value) => value > 0)
-    .withMessage("Id no valido"),
+  validationBudgetId,
   handleInputErrors,
   BudgetController.deleteById
 );
