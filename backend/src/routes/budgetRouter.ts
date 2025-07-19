@@ -5,6 +5,9 @@ import { handleInputErrors } from "../middleware/validation";
 import { validateBudgetExist, validationBudgetId } from "../middleware/budget";
 const router = Router();
 
+router.param("budgetId", validationBudgetId);
+router.param("budgetId", validateBudgetExist);
+
 router.get("/", BudgetController.getAll);
 router.post(
   "/",
@@ -23,13 +26,11 @@ router.post(
   BudgetController.create
 );
 router.get(
-  "/:id",
-  validationBudgetId,
-  validateBudgetExist,
+  "/:budgetId",
   BudgetController.getById
 );
 router.put(
-  "/:id",
+  "/:budgetId",
   body("name")
     .notEmpty()
     .withMessage("El nombre del presupuesto es obligatorio"),
@@ -40,20 +41,11 @@ router.put(
     .withMessage("El monto del presupuesto debe ser un número")
     .custom((value) => value > 0)
     .withMessage("El monto del presupuesto debe ser mayor a 0"),
-  param("id")
-    .isInt()
-    .withMessage("Id no valido")
-    .custom((value) => value > 0)
-    .withMessage("Id no valido"),
   handleInputErrors,
-  validateBudgetExist,
   BudgetController.updateById
 );
 router.delete(
-  "/:id",
-  validationBudgetId,
-  handleInputErrors,
-  validateBudgetExist,
+  "/:budgetId",
   BudgetController.deleteById
 );
 export default router;
