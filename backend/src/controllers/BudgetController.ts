@@ -28,52 +28,22 @@ export class BudgetController {
   };
 
   static getById = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const budget = await Budget.findByPk(id);
-      if (!budget) {
-        const error = new Error("Presupuesto no encontrado");
-        return res.status(404).json({ message: error.message });
-      }
-      res.json(budget);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error al obtener el presupuesto" });
-    }
+   const budget = req.budget;
+   res.json(budget);
   };
 
   static updateById = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const { name, amount } = req.body;
-      const budget = await Budget.findByPk(id);
-      if (!budget) {
-        const error = new Error("Presupuesto no encontrado");
-        return res.status(404).json({ message: error.message });
-      }
-      budget.name = name;
-      budget.amount = amount;
-      await budget.save();
-      res.json({ message: "Presupuesto actualizado exitosamente", budget });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error al actualizar el presupuesto" });
-    }
+   const budget = req.budget;
+   const { name, amount } = req.body;
+   budget.name = name;
+   budget.amount = amount;
+   await budget.save();
+   res.json({ message: "Presupuesto actualizado exitosamente", budget });
   };
 
   static deleteById = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const budget = await Budget.findByPk(id);
-      if (!budget) {
-        const error = new Error("Presupuesto no encontrado");
-        return res.status(404).json({ message: error.message });
-      }
-      await budget.destroy();
-      res.json({ message: "Presupuesto eliminado exitosamente" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error al eliminar el presupuesto" });
-    }
+   const budget = req.budget;
+   await budget.destroy();
+   res.json({ message: "Presupuesto eliminado exitosamente" });
   };
 }
