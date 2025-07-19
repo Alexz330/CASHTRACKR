@@ -5,7 +5,7 @@ import Budget from "./Budget";
     tableName: "expenses",
     timestamps: true,
 })
-class Expense extends Model{
+export class Expense extends Model{
     @Column({
         type: DataType.STRING,
     })
