@@ -32,9 +32,9 @@ router.delete("/:budgetId", BudgetController.deleteById);
 
 
 /**Routes for expense */
-router.get("/:budgetId/expense", ExpenseController.getAll);
-router.post("/:budgetId/expense", ExpenseController.create);
-router.get("/:budgetId/expense/:expenseId", ExpenseController.getById);
-router.put("/:budgetId/expense/:expenseId", ExpenseController.updateById);
-router.delete("/:budgetId/expense/:expenseId", ExpenseController.deleteById);
+router.get("/:budgetId/expenses", ExpenseController.getAll);
+router.post("/:budgetId/expenses", ExpenseController.create);
+router.get("/:budgetId/expenses/:expenseId", ExpenseController.getById);
+router.put("/:budgetId/expenses/:expenseId", ExpenseController.updateById);
+router.delete("/:budgetId/expenses/:expenseId", ExpenseController.deleteById);
 export default router;
