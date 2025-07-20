@@ -8,12 +8,13 @@ import {
   validateBudgetExist,
   validationBudgetId,
 } from "../middleware/budget";
-import { validateExpenseInput } from "../middleware/expense";
+import { validateExpenseInput, validateExpenseId } from "../middleware/expense";
 
 const router = Router();
 
 router.param("budgetId", validationBudgetId);
 router.param("budgetId", validateBudgetExist);
+router.param("expenseId", validateExpenseId);
 
 router.get("/", BudgetController.getAll);
 router.post(
@@ -25,7 +26,6 @@ router.post(
 router.get("/:budgetId", BudgetController.getById);
 router.put(
   "/:budgetId",
-  validateBudgetInput,
   handleInputErrors,
   BudgetController.updateById
 );
@@ -41,11 +41,16 @@ router.post(
   handleInputErrors,
   ExpenseController.create
 );
-router.get("/:budgetId/expenses/:expenseId", ExpenseController.getById);
+router.get(
+  "/:budgetId/expenses/:expenseId",
+  validateExpenseId,
+  ExpenseController.getById
+);
 
 router.put(
   "/:budgetId/expenses/:expenseId",
   validateExpenseInput,
+
   handleInputErrors,
   ExpenseController.updateById
 );
