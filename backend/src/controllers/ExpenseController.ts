@@ -16,7 +16,21 @@ export class ExpenseController {
       res.status(500).json({ message: "Error al crear el gasto" });
     }
   };
-  static getById = async (req: Request, res: Response) => {};
-  static updateById = async (req: Request, res: Response) => {};
-  static deleteById = async (req: Request, res: Response) => {};
+  static getById = async (req: Request, res: Response) => {
+    res.status(200).json(req.expense);
+  };
+  static updateById = async (req: Request, res: Response) => {
+    const {name, amount} = req.body;
+    const expense = req.expense;
+    expense.name = name;
+    expense.amount = amount;
+    await expense.save();
+    res.status(200).json({message: "Gasto actualizado exitosamente", expense});
+
+  };
+  static deleteById = async (req: Request, res: Response) => {
+    const expense = req.expense;
+    await expense.destroy();
+    res.status(200).json({message: "Gasto eliminado exitosamente", expense});
+  };
 }
