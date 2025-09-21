@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
+import { hashPassword } from "../ utils/auth";
 
 export class AuthController{
     static async createAccount(req: Request, res: Response){
@@ -14,7 +15,8 @@ export class AuthController{
         }
 
         try{
-            const user = await User.create({name, email, password});
+            const hashedPassword = await hashPassword(password);
+            await User.create({name, email, password: hashedPassword});
             return res.status(201).json({message: "Cuenta creada exitosamente"});
         }catch(error){
             console.log(error);
