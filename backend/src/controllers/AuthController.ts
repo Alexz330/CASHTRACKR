@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../models/User";
 import { hashPassword } from "../ utils/auth";
 import { generateToken } from "../ utils/token";
+import { AuthEmail } from "../emails/AuthEmail";
 
 export class AuthController{
     static async createAccount(req: Request, res: Response){
@@ -22,6 +23,13 @@ export class AuthController{
             //Generar token
             user.token = generateToken();
             await user.save();
+
+            // Envio de correo de confirmacion 
+            AuthEmail.sendConfirmationEmail({
+                name,
+                email,
+                token: user.token
+            });
             return res.status(201).json({message: "Cuenta creada exitosamente"});
         }catch(error){
             console.log(error);
