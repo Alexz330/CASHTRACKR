@@ -58,4 +58,30 @@ export class AuthController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  static async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+    try {
+      const userExist = await User.findOne({ where: { email } });
+
+      //Verificar si el usuario existe
+      if (!userExist) {
+        const error = new Error("El correo no esta registrado");
+        error.name = "UserNotFound";
+        return res.status(404).json({ error: error.message });
+      }
+
+      //Verificar si el usuario esta confirmado
+      if (!userExist.confirmed) {
+        const error = new Error("Cuenta no confirmada");
+        error.name = "UserNotConfirmed";
+        return res.status(403).json({ error: error.message });
+      }
+ 
+      return res.status(200).json({ message: "Login exitoso" });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
