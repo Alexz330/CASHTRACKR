@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
-import { hashPassword } from "../ utils/auth";
+import { comparePassword, hashPassword } from "../ utils/auth";
 import { generateToken } from "../ utils/token";
 import { AuthEmail } from "../emails/AuthEmail";
 
@@ -76,6 +76,14 @@ export class AuthController {
         const error = new Error("Cuenta no confirmada");
         error.name = "UserNotConfirmed";
         return res.status(403).json({ error: error.message });
+      }
+      //Verificar si la contraseña es correcta
+      const isPasswordCorrect= await comparePassword(password, userExist.password);
+      
+      if(!isPasswordCorrect){
+        const error = new Error("Contraseña incorrecta");
+        error.name = "PasswordIncorrect";
+        return res.status(401).json({ error: error.message });
       }
  
       return res.status(200).json({ message: "Login exitoso" });
