@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
-import { comparePassword, hashPassword } from "../ utils/auth";
-import { generateToken } from "../ utils/token";
+import { comparePassword, hashPassword } from "../utils/auth";
+import { generateToken } from "../utils/token";
 import { AuthEmail } from "../emails/AuthEmail";
+import { generateJWT } from "../utils/jwt";
 
 export class AuthController {
   static async createAccount(req: Request, res: Response) {
@@ -78,14 +79,21 @@ export class AuthController {
         return res.status(403).json({ error: error.message });
       }
       //Verificar si la contraseña es correcta
-      const isPasswordCorrect= await comparePassword(password, userExist.password);
-      
-      if(!isPasswordCorrect){
+      const isPasswordCorrect = await comparePassword(
+        password,
+        userExist.password
+      );
+
+      if (!isPasswordCorrect) {
         const error = new Error("Contraseña incorrecta");
         error.name = "PasswordIncorrect";
         return res.status(401).json({ error: error.message });
       }
- 
+      //
+
+      const token = generateJWT(userExist.id);
+      res.json({ token });
+
       return res.status(200).json({ message: "Login exitoso" });
     } catch (error) {
       console.log(error);
