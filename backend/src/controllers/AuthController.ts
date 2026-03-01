@@ -100,4 +100,8 @@ export class AuthController {
       return res.status(500).json({ error: error.message });
     }
   }
+
+  static async forgotPassword(req:Request, res:Response){
+    res.json({ message: "Forgot password" });
+  }
 }
