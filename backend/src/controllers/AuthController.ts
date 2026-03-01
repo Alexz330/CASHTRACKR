@@ -152,4 +152,8 @@ export class AuthController {
     
     res.json({ message: "Contraseña actualizada correctamente" }); 
   }
+  
+  static async user(req:Request, res:Response){
+    res.json({ user: req.user });
+  }
 }
