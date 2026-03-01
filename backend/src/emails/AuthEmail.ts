@@ -20,4 +20,18 @@ export class AuthEmail {
                  `,
     });
   };
+
+  static sendForgotPasswordEmail = async (user: EmailType) => {
+    const email = await transport.sendMail({
+      from: "CashTrackr <alexis@cashtrackr.com>",
+      to: user.email,
+      subject: "Recuperar contraseña",
+      html: `<p>Hola ${user.name}, has solicitado recuperar tu contraseña</p>
+             <p>Visita el siguiente enlace:</p>
+             <a href="#}">Recuperar contraseña</a>
+           <p> e ingres el codigo de confirmacion: ${user.token}</p>
+           <p>Gracias por usar CashTrackr</p>
+                 `,
+    });
+  };
 }

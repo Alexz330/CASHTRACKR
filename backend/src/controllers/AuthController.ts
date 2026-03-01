@@ -102,6 +102,24 @@ export class AuthController {
   }
 
   static async forgotPassword(req:Request, res:Response){
-    res.json({ message: "Forgot password" });
+
+    const { email } = req.body;
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      const error = new Error("El correo no esta registrado");
+      error.name = "UserNotFound";
+      return res.status(404).json({ error: error.message });
+    }
+    user.token = generateToken();
+    await user.save();
+
+    // Enviar email con el token
+    await AuthEmail.sendForgotPasswordEmail({
+      name: user.name,
+      email: user.email,
+      token: user.token,
+    });
+
+    res.json({ message: "Se ha enviado un email con las instrucciones" }); 
   }
 }
