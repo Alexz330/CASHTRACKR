@@ -122,4 +122,17 @@ export class AuthController {
 
     res.json({ message: "Se ha enviado un email con las instrucciones" }); 
   }
+
+  static async validateToken(req:Request, res:Response){
+    const { token } = req.body;
+    console.log(token);
+    const user = await User.findOne({ where: { token } });
+    console.log(user);
+    if (!user) {
+      const error = new Error("Token no valido");
+      error.name = "TokenInvalid";
+      return res.status(401).json({ error: error.message });
+    }
+    res.json({ message: "Token valido" }); 
+  }
 }

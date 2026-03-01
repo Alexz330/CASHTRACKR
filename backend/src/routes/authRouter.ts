@@ -44,4 +44,14 @@ router.post('/forgot-password',
     AuthController.forgotPassword
 )
 
+router.post('/validate-token',
+  body('token')
+    .isLength({ min: 6 , max: 6})
+    .withMessage('El token debe tener exactamente 6 caracteres')
+    .notEmpty()
+    .withMessage('El token no puede ir vacio'),
+  handleInputErrors,
+  AuthController.validateToken
+)
+
 export default router;
