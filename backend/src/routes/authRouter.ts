@@ -3,6 +3,7 @@ import { body } from "express-validator";
 import { AuthController } from "../controllers/AuthController";
 import { handleInputErrors } from "../middleware/validation";
 import { limiter } from "../config/limiter";
+import { param } from "express-validator";
 
 const router = Router();
 router.use(limiter);
@@ -52,6 +53,16 @@ router.post('/validate-token',
     .withMessage('El token no puede ir vacio'),
   handleInputErrors,
   AuthController.validateToken
+)
+
+router.post('/reset-password/:token',
+  param('token')
+  .isLength({ min: 6 , max: 6}).withMessage('Token no válido'),
+  body('password')
+    .isLength({ min: 8 })
+    .withMessage('La contraseña debe tener al menos 8 caracteres'),
+  handleInputErrors,
+  AuthController.resetPasswordWithToken
 )
 
 export default router;
